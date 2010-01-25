@@ -1,0 +1,6 @@
+^MYMETA.yml$
+_build
+blib
+Build
+.git
+.gitignore

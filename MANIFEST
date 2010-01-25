@@ -1,0 +1,6 @@
+lib/PDT.pm
+lib/PDT/Spec.pod
+MANIFEST			This list of files
+MANIFEST.SKIP
+META.yml
+README

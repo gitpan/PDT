@@ -1,0 +1,157 @@
+=head1 NAME
+
+PDT::Spec - Specification for PDT
+
+=head1 *EARLY STAGE WARNING*
+
+This module is currently in the early stages. For the latest please check the
+github page at L<http://github.com/exodist/PDT>
+
+=head1 DESCRIPTION
+
+PDT-Spec is the current specification for PDT.
+
+=head1 WHAT IS PDT?
+
+PDT stands for Perl Development and Testing. It is a centralized P2P testing
+framework for perl. Ever have a hard time testing your module on a platform to
+which you don't have access? Ever have to wait a couple days to see if your
+locally passing tests are failing in cpan testers? Than this application is for
+you.
+
+This application handles perl testing in a non-passive way. Instead of waiting
+and hoping someone will test your module on an obscure platform, you can push
+your module to be tested on that platform immedietly.
+
+=head1 HOW IT WILL WORK
+
+The PDT network will consist of loosley connected web servers. A server will
+track testing requests, and hosts willing to run them. A client will post a
+testing request to the server. A host will regularily query the server for a
+test request. Once a host finishes running the test it will post the results
+back to the server.
+
+=head1 SERVER
+
+The server will be a catalyst based webapp. The following is a preliminary list
+of controllers. This is likely to change. Data will be exchanged using json.
+Some controllers will have a form when loaded without a post.
+
+=over 4
+
+=item servers
+
+Provides a list of other servers.
+
+=item request
+
+Used by a client to issue a request. Takes a plugin name, and host
+specifications and/or a specific host id.
+
+=item fetch
+
+Used by a host to fetch a request. A host will post its host id so that the
+server can lookup it's specifications.
+
+=item respond
+
+Used by a host to post a responce to a request.
+
+=item register
+
+Used by a host to register it's capabilities. Also used by other servers to
+register.
+
+=item stats
+
+Random statistics.
+
+=item hosts
+
+List of hosts that are registered.
+
+=item requests
+
+Pending requests.
+
+=back
+
+=head1 HOST
+
+Hosts will be nodes willing to do some work. Hosts are shared by generous
+people making their system available to test perl code. Every task type will be
+a plugin, by default no plugins will be installed. Hosts can choose what
+features they wish to provide.
+
+The main functionality plugin to use will be basic testing. This module will
+obtain the source pushed by a client, and run the test suite reporting the
+results back to the client. In the event of a failure plugins can be devised to
+help find the problem.
+
+The main benefit here is that when a test failes on a host you will be able to
+continue working with that host, using provided features to immedietly solve
+the problem. No need to guess at the problem, upload a potential fix, and wait
+for the next testers results. No need to directly pester any cpan-testers
+either.
+
+=head1 CLIENT
+
+The client is the user interface to the network. Ideally a command can be as
+simple as:
+
+    $ pdt-client test -arch x86_64-linux -source git://source.com/myrepo.git
+    ... Test Results ...
+    ... host ID to retry when tests fail ...
+
+=head1 REQUIREMENTS
+
+=over 4
+
+=item Sparse Dependancies for hosts and clients
+
+We want people to volunteer to be host. We also want the testing network to be
+easily accessible on all architectures and operating systems. If people need to
+install a beast such as Moose, and it is not packaged by their operating
+system, they may give up. In some cases people may have politics or conditions
+that mean they absolutely cannot install too many modules.
+
+=item Security
+
+Hosts are putting themselves on the line providing their system for tester use.
+Every feature and service a host can offer must be a plugin. - TODO need more
+details/work here.
+
+=item Ease of installation and use
+
+If people have to work hard to install their testing framework they may just
+skip it.
+
+=back
+
+=head1 IMPLEMENTATION DETAILS
+
+=over 4
+
+=item Catalyst web-server
+
+=item Simple CLI client/host interface
+
+=item Plugins for features
+
+The core features will be very minimal, all others will be plugins.
+
+=back
+
+=head1 AUTHORS
+
+Chad Granum L<exodist7@gmail.com>
+
+=head1 COPYRIGHT
+
+Copyright (C) 2010 Chad Granum
+
+PDT is free software; Standard perl licence.
+
+PDT is distributed in the hope that it will be useful, but WITHOUT
+ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+FOR A PARTICULAR PURPOSE.  See the license for more details.
